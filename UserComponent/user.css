@@ -1,0 +1,22 @@
+/* Global CSS file (e.g. src/index.css) */
+.custom-notification .ant-notification-notice {
+  background-color: #333333 !important;   /* dark gray background */
+  border: 1px solid rgba(255,255,255,0.06) !important;
+  color: #ffffff !important;              /* default text color */
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4) !important;
+}
+
+/* message & description text */
+.custom-notification .ant-notification-notice-message,
+.custom-notification .ant-notification-notice-description {
+  color: #ffffff !important;
+}
+
+/* close btn color (X) */
+.custom-notification .ant-notification-notice-close .anticon {
+  color: #ffffff !important;
+}
+.custom-notification .ant-notification-notice-close svg {
+  fill: #ffffff !important;
+}

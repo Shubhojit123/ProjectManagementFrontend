@@ -1,0 +1,37 @@
+@import "tailwindcss";
+.ant-menu-submenu-title:hover {
+  color: #ffffff !important;
+  background-color: #1a1a1a !important;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+ 
+::-webkit-scrollbar-thumb {
+  /* background: #9D14EDD9; */
+  background: #ffffff;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+@keyframes typing {
+  0% { content: ''; }
+  33% { content: '.'; }
+  66% { content: '..'; }
+  100% { content: '...'; }
+}
+
+.typing-dots::after {
+  content: '';
+  display: inline-block;
+  animation: typing 1s steps(3, end) infinite;
+}
