@@ -18,6 +18,7 @@ function Login() {
                 content: "Login Successfully",
             });
             role = result.data.role;
+            console.log("role",role);
             localStorage.setItem("taskmanagement", result.data.token);
             if (role === "User") {
                 navigate("/user/dashboard")

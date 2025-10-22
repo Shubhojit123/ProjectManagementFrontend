@@ -17,7 +17,7 @@ import ProfilePage from '../AdminComponent/ProfilePage'
 import Project from '../ManagerComonent/Project'
 import { data } from 'react-router-dom';
 import { io } from "socket.io-client";
-import ChatPage from '../ChatPage/chatPage';
+import ChatPage from '../ChatPage/ChatPage'
 import { IoChatboxOutline } from 'react-icons/io5';
 
 
