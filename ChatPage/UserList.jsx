@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAdmin } from "../AdminComponent/AdminContext";
-import { Avatar, Input } from "antd";
+import { Avatar, Input, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import { EyeOutlined, MessageOutlined } from "@ant-design/icons";
 
@@ -13,15 +13,19 @@ function UserList({ onSelectMember, socket, setIsOnline, admin }) {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [typingUser, setTypingUser] = useState(null);
   const navigate = useNavigate();
-
+  const [loading,setLoading] = useState(false)
   // Fetch all members
   useEffect(() => {
     const fetchMembers = async () => {
+      setLoading(true)
       try {
         const res = await getAllMemebers();
         setMembers(res.data.userData);
       } catch (error) {
         console.log(error);
+      }
+      finally{
+        setLoading(false);
       }
     };
     fetchMembers();
@@ -59,6 +63,15 @@ function UserList({ onSelectMember, socket, setIsOnline, admin }) {
   };
 
   console.log("typing", typingUser)
+
+    if(loading)
+    {
+        return(
+          <div className="h-[98vh] overflow-hidden flex flex-col justify-center items-center">
+            <Spin />
+          </div>
+        )
+    }
 
   return (
     <div className="h-[98vh] overflow-hidden flex flex-col">

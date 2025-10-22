@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useAdmin } from "../AdminComponent/AdminContext";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { Avatar } from "antd";
+import { Avatar, Spin } from "antd";
 import { FaCheckCircle } from "react-icons/fa";
 
 function MsgComponent({ member, socket, isOnline }) {
@@ -113,7 +113,14 @@ function MsgComponent({ member, socket, isOnline }) {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+  {
+      return(
+        <div className="p-4 w-full h-full flex flex-col justify-center items-center">
+            <Spin/>
+        </div>
+      )
+  }
 
   return (
     <div className="p-4 w-full h-full flex flex-col">

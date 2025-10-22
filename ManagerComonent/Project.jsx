@@ -689,7 +689,6 @@ useEffect(() => {
         </Form>
       </Modal>
 
-      {/* Create Team Modal */}
       <Modal
         title="Create Team"
         open={isTeamModal}
