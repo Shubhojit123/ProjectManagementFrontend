@@ -9,7 +9,7 @@ function Community() {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const BASE_URL = import.meta.evn.BASE_URL;
+  const BASE_URL = import.meta.env.BASE_URL;
 
   useEffect(() => {
     axios
