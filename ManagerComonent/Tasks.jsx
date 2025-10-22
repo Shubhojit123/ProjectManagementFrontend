@@ -30,7 +30,7 @@ function Tasks() {
   const [selectedProjectEndDate, setSelectedProjectEndDate] = useState(null); 
   const [taskForm] = Form.useForm();
 
-  const BASE_URL = import.meta.env.BASE_URL;
+  const BASE_URL = import.meta.env.VITE_URL;
 
 
   const fetchUsers = async () => {
