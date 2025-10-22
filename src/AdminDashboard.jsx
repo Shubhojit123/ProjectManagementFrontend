@@ -42,7 +42,7 @@ import AIChatComponent from "../component/AIChatModal";
 import AiLogo from "./assets/Ab.jpg";
 import Projects from "../AdminComponent/Projects";
 import { IoChatboxOutline } from "react-icons/io5";
-import ChatPage from "../ChatPage/chatPage";
+import ChatPage from "../ChatPage/ChatPage";
 const { Sider, Content } = Layout;
 
 const AdminDashboard = () => {

@@ -14,7 +14,7 @@ import AIChatComponent from "../component/AIChatModal";
 import AiLogo from "./assets/Ab.jpg";
 import ProfilePage from "../UserComponent/ProfilePage";
 import { io } from "socket.io-client";
-import ChatPage from "../ChatPage/chatPage";
+import ChatPage from "../ChatPage/ChatPage";
 import { IoChatbox } from "react-icons/io5";
 
 const UserDashboard = () => {
