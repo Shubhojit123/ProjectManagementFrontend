@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Table,
   Modal,
@@ -12,11 +12,11 @@ import {
 } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
-
+import { io } from "socket.io-client";
 function Project({ socket }) {
+  console.log(socket)
   const [messageApi, contextHolder] = message.useMessage();
-  const VITE_URL = import.meta.env.VITE_URL;
-
+    const VITE_URL = import.meta.env.VITE_URL;
   const [projects, setProjects] = useState([]);
   const [teams, setTeams] = useState([]);
   const [users, setUsers] = useState([]);
@@ -47,17 +47,26 @@ function Project({ socket }) {
   const [projectForm] = Form.useForm();
   const [teamForm] = Form.useForm();
 
+  // Helpers
   const getStatusColor = (status) => {
     switch (status) {
-      case "Pending": return "orange";
-      case "In Progress": return "blue";
-      case "Completed": return "green";
-      default: return "default";
+      case "Pending":
+        return "orange";
+      case "In Progress":
+        return "blue";
+      case "Completed":
+        return "green";
+      default:
+        return "default";
     }
   };
 
+
   const openCommentModal = (task) => {
-    if (!task.comments?.length) return messageApi.info("No comments for this task");
+    if (!task.comments || task.comments.length === 0) {
+      messageApi.info("No comments for this task");
+      return;
+    }
     setSelectedComments(task.comments);
     setSelectedTaskTitle(task.title);
     setIsCommentModalOpen(true);
@@ -65,7 +74,10 @@ function Project({ socket }) {
 
   const fetchProjects = async () => {
     try {
-      const res = await axios.get(`${VITE_URL}/api/v1/manager/project-list`, { withCredentials: true });
+      const res = await axios.get(
+        `${VITE_URL}/manager/project-list`,
+        { withCredentials: true }
+      );
       setProjects(Array.isArray(res.data) ? res.data.reverse() : []);
     } catch (err) {
       console.error(err);
@@ -73,21 +85,39 @@ function Project({ socket }) {
     }
   };
 
-  useEffect(() => {
+  // let socket  = useRef(null)
+
+useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await axios.get(`${VITE_URL}/manager/project-list`, { withCredentials: true });
+        setProjects(Array.isArray(res.data) ? res.data.reverse() : []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
     fetchProjects();
 
     if (!socket) return;
+
+    // Listen for real-time updates
     socket.on("new-Project", (data) => {
       console.log("New project received:", data);
       setProjects(data);
     });
 
+    // Cleanup listener on unmount
     return () => socket.off("new-Project");
   }, [socket]);
 
+  // Open Teams Modal
   const handleProjectClick = async (projectId) => {
     try {
-      const res = await axios.get(`${VITE_URL}/api/v1/manager/teams-list?projectid=${projectId}`, { withCredentials: true });
+      const res = await axios.get(
+        `${VITE_URL}/manager/teams-list?projectid=${projectId}`,
+        { withCredentials: true }
+      );
       setTeams(Array.isArray(res.data) ? res.data : []);
       setSelectedProjectId(projectId);
       const proj = projects.find((p) => p._id === projectId);
@@ -101,20 +131,27 @@ function Project({ socket }) {
   const fetchUserTasks = async (userId, username) => {
     try {
       setLoadingTasks(true);
-      const res = await axios.get(`${VITE_URL}/api/v1/manager/task-by-id?userId=${userId}`, { withCredentials: true });
+      const res = await axios.get(
+        `${VITE_URL}/manager/task-by-id?userId=${userId}`,
+        { withCredentials: true }
+      );
       setTasks(res.data.task || []);
       setSelectedUsername(username || "");
       setIsShowTaskModalOpen(true);
+      setLoadingTasks(false);
     } catch (err) {
       console.error(err);
-    } finally {
       setLoadingTasks(false);
     }
   };
 
+  // Open Users Modal
   const handleTeamClick = async (teamId) => {
     try {
-      const res = await axios.get(`${VITE_URL}/api/v1/manager/user-team?teamsid=${teamId}`, { withCredentials: true });
+      const res = await axios.get(
+        `${VITE_URL}/manager/user-team?teamsid=${teamId}`,
+        { withCredentials: true }
+      );
       setUsers(Array.isArray(res.data) ? res.data : []);
       setOpenUsersModal(true);
     } catch (err) {
@@ -122,6 +159,7 @@ function Project({ socket }) {
     }
   };
 
+  // Open Assign Task Modal
   const handleOpenAssignTask = (userId) => {
     setSelectedUserId(userId);
     taskForm.resetFields();
@@ -136,7 +174,11 @@ function Project({ socket }) {
         endDate: values.endDate ? values.endDate.toISOString() : null,
         userId: selectedUserId,
       };
-      await axios.post(`${VITE_URL}/api/v1/manager/assign-task`, taskData, { withCredentials: true });
+      await axios.post(
+        `${VITE_URL}/manager/assign-task`,
+        taskData,
+        { withCredentials: true }
+      );
       messageApi.success("Task assigned successfully!");
       setIsAssignModal(false);
       fetchProjects();
@@ -148,7 +190,10 @@ function Project({ socket }) {
 
   const handleOpenAssignUsers = async (teamId) => {
     try {
-      const res = await axios.get(`${VITE_URL}/api/v1/manager/notassign`, { withCredentials: true });
+      const res = await axios.get(
+        `${VITE_URL}/manager/notassign`,
+        { withCredentials: true }
+      );
       setNotAssignedUsers(res.data.notAssign || []);
       setAssigningTeamId(teamId);
       setAssignUsersModal(true);
@@ -160,10 +205,13 @@ function Project({ socket }) {
   };
 
   const handleAssignSelectedUsers = async () => {
-    if (!selectedAssignUsers.length) return messageApi.warning("Please select at least one user");
-
+    if (!selectedAssignUsers.length) {
+      messageApi.warning("Please select at least one user");
+      return;
+    }
     try {
-      await axios.put(`${VITE_URL}/api/v1/manager/set-user`,
+      await axios.put(
+        `${VITE_URL}/manager/set-user`,
         { assignUser: selectedAssignUsers, teamId: assigningTeamId },
         { withCredentials: true }
       );
@@ -176,12 +224,17 @@ function Project({ socket }) {
     }
   };
 
+  // Create Project
   const handleCreateProject = async (values) => {
     try {
-      await axios.post(`${VITE_URL}/api/v1/manager/create-project`, {
-        projectName: values.projectName,
-        endDate: values.endDate ? values.endDate.toISOString() : null,
-      }, { withCredentials: true });
+      await axios.post(
+        `${VITE_URL}/manager/create-project`,
+        {
+          projectName: values.projectName,
+          endDate: values.endDate ? values.endDate.toISOString() : null,
+        },
+        { withCredentials: true }
+      );
       messageApi.success("Project created successfully!");
       projectForm.resetFields();
       setIsProjectModal(false);
@@ -192,9 +245,11 @@ function Project({ socket }) {
     }
   };
 
+  // Create Team
   const handleCreateTeam = async (values) => {
     try {
-      await axios.post(`${VITE_URL}/api/v1/manager/create-team`,
+      await axios.post(
+        `${VITE_URL}/manager/create-team`,
         { projectId: selectedProjectId, teamName: values.teamName },
         { withCredentials: true }
       );
@@ -208,11 +263,6 @@ function Project({ socket }) {
     }
   };
 
-  const handleCommentModalCancel = () => {
-    setIsCommentModalOpen(false);
-    setSelectedComments([]);
-    setSelectedTaskTitle("");
-  };
   const handleCommentModalCancel = () => {
     setIsCommentModalOpen(false);
     setSelectedComments([]);
