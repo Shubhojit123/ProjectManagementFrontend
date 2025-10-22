@@ -8,7 +8,7 @@ export const useAdmin = () => useContext(AdminContext);
 
 export const AdminProvider = ({ children }) => {
   const [messageApi, contextHolder] = message.useMessage();
-  const BASE_URL = import.meta.env.VITE_URL;
+  const BASE_URL = import.meta.env.VITE_URL ;
 
 
   const [profile, setProfile] = useState(null);
@@ -68,7 +68,7 @@ export const AdminProvider = ({ children }) => {
 
   const getAllProjects = async () => {
     try {
-      const res = await api.get("/admin/all-projects", { withCredentials: true });
+      const res = await api.get(`${BASE_URL}/admin/all-projects`, { withCredentials: true });
       return res;
     } catch (error) {
       console.error("Logout error:", error);
