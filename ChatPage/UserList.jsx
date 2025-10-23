@@ -3,6 +3,7 @@ import { useAdmin } from "../AdminComponent/AdminContext";
 import { Avatar, Input, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import { EyeOutlined, MessageOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 const { Search } = Input;
 
@@ -15,6 +16,8 @@ function UserList({ onSelectMember, socket, setIsOnline, admin }) {
   const navigate = useNavigate();
   const [loading,setLoading] = useState(false)
   // Fetch all members
+  const BASE_URL = import.meta.env.VITE_URL;
+
   useEffect(() => {
     const fetchMembers = async () => {
       setLoading(true)
@@ -30,6 +33,7 @@ function UserList({ onSelectMember, socket, setIsOnline, admin }) {
     };
     fetchMembers();
   }, []);
+
 
   useEffect(() => {
     if (!socket) return;

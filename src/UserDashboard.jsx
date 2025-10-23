@@ -16,6 +16,7 @@ import ProfilePage from "../UserComponent/ProfilePage";
 import { io } from "socket.io-client";
 import ChatPage from "../ChatPage/ChatPage";
 import { IoChatbox } from "react-icons/io5";
+import Community from "../UserComponent/community"
 
 const UserDashboard = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -67,11 +68,11 @@ const UserDashboard = () => {
       case "1":
         return <Tasks />;
       case "2":
-        return <h2 className="text-white text-xl">Community</h2>;
+        return <Community/>
       case "3":
         return <ProfilePage/>
         case "4":
-          return <ChatPage socket={socket.current}/>;
+          return <ChatPage socket={socket.current} />;
       default:
         return (
           <div className="text-center py-12">

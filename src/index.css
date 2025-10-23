@@ -35,3 +35,9 @@
   display: inline-block;
   animation: typing 1s steps(3, end) infinite;
 }
+.ant-message-notice-content {
+  background-color: #000 !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+}

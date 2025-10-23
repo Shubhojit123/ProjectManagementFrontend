@@ -23,7 +23,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { IoCamera } from "react-icons/io5";
 
-const ProfilePage = () => {
+const ProfilePage = ({admin}) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -173,7 +173,7 @@ const ProfilePage = () => {
                 <Button
                   shape="circle"
                   size="large"
-                  icon={uploadLoading ? <Spin size="small" /> : <EditOutlined style={{ color: "black" }} />}
+                  icon={uploadLoading ? <Spin size="small" /> : <EditOutlined style={`${admin}`?{ color: "white" }:{color:"black"}} />}
                   className="absolute bottom-0 right-0 shadow-lg bg-blue-600 hover:bg-blue-700 border-none"
                   style={{ width: "40px", height: "40px", color: "white" }}
                   disabled={uploadLoading}
@@ -248,7 +248,7 @@ const ProfilePage = () => {
             <div className="text-center">
               <div className="text-3xl mb-1">👤</div>
               <div className="text-xs text-gray-400">Account Type</div>
-              <div className="text-sm font-semibold text-black mt-1">
+             <div className={`text-sm font-semibold mt-1 ${admin ? "text-white" : "text-black"}`}>
                 {profile?.role}
               </div>
             </div>
@@ -264,7 +264,7 @@ const ProfilePage = () => {
                 {profile?.userStatus ? "✅" : "⏸️"}
               </div>
               <div className="text-xs text-gray-400">Status</div>
-              <div className="text-sm font-semibold text-black mt-1">
+              <div className={`text-sm font-semibold mt-1 ${admin ? "text-white" : "text-black"}`}>
                 {profile?.userStatus ? "Active" : "Inactive"}
               </div>
             </div>

@@ -135,6 +135,8 @@ const AdminDashboard = () => {
         return <Projects socket={socket.current} />;
       case "7":
         return <ChatPage socket={socket.current} />;
+      case "8":
+        return <ProfilePage admin={true}/>;
       default:
         return <h2 className="text-white p-4">Welcome to Dashboard</h2>;
     }
@@ -250,6 +252,7 @@ const AdminDashboard = () => {
                 )
               }
             >
+              
               <Menu.Item key="2" icon={<UserOutlined />}>
                 Admin List
               </Menu.Item>
@@ -282,6 +285,10 @@ const AdminDashboard = () => {
             <Menu.Item key="7" icon={<IoChatboxOutline />}>
               Chat
             </Menu.Item>
+            <Menu.Item key="8" icon={<ProfileOutlined />}>
+              Profile
+            </Menu.Item>
+
           </Menu>
 
         </Sider>
