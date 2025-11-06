@@ -68,7 +68,7 @@ const AIChatModal = ({ visible, onClose }) => {
         { withCredentials: true }
       );
       console.log("AI Data", response);
-      const aiReply = response.data.data;
+      const aiReply = response.data.answer;
 
       setMessages((prev) => [...prev, { 
         user: "AI", 
