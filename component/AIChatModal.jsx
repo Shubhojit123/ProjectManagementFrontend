@@ -59,7 +59,7 @@ const AIChatModal = ({ visible, onClose }) => {
     setInput("");
     setLoading(true);
 
-    const BASE_URL = import.meta.env.VITE_URL;
+    const BASE_URL = import.meta.env.BOT_URL;
 
     try {
       const response = await axios.post(
