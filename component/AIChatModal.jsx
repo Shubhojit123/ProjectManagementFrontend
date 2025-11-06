@@ -59,7 +59,7 @@ const AIChatModal = ({ visible, onClose }) => {
     setInput("");
     setLoading(true);
 
-    const BASE_URL = import.meta.env.BOT_URL;
+    const BASE_URL = "https://rag-system-4-ujwj.onrender.com/api"
 
     try {
       const response = await axios.post(
