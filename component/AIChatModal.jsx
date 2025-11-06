@@ -64,7 +64,7 @@ const AIChatModal = ({ visible, onClose }) => {
     try {
       const response = await axios.post(
         `${BASE_URL}/chat`,
-        { prompt: userMessage },
+        { question: userMessage, role: "Admin" },
         { withCredentials: true }
       );
       console.log("AI Data", response);
